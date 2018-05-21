@@ -96,7 +96,7 @@ namespace CheckReceiptSDK
         /// <param name="date">Дата, указанная в чеке. Секунды не обязательные.</param>
         /// <param name="sum">Сумма, указанная в чеке. Включая копейки.</param>
         /// <returns></returns>
-        public static async Task<CheckResult> CheckAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, DateTime date, float sum)
+        public static async Task<CheckResult> CheckAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, DateTime date, decimal sum)
         {
             var response = await _client.GetAsync(Urls.GetCheckUrl(fiscalNumber, fiscalDocument, fiscalSign, date, sum));
             var result = new CheckResult
