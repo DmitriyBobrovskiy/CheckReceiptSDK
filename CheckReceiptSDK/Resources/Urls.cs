@@ -4,7 +4,7 @@ namespace CheckReceiptSDK.Resources
 {
     internal static class Urls
     {
-        private const string DateFormat = "yyyy-MM-ddThh:mm:ss";
+        private const string DateFormat = "yyyy-MM-ddTHH:mm:ss";
 
         internal const string Registration = "https://proverkacheka.nalog.ru:9999/v1/mobile/users/signup";
         internal const string Login = "https://proverkacheka.nalog.ru:9999/v1/mobile/users/login";
