@@ -9,6 +9,9 @@ namespace CheckReceiptSDK.Results
     /// </summary>
     public sealed class ReceiptResult : Result
     {
+        /// <summary>
+        /// Информация о документе, которая приходит из ФНС
+        /// </summary>
         public Document Document { get; internal set; }
 
         internal ReceiptResult()
@@ -27,6 +30,9 @@ namespace CheckReceiptSDK.Results
     [DataContract]
     public class Document
     {
+        /// <summary>
+        /// Внутренняя информация о чеке
+        /// </summary>
         [DataMember]
         public Receipt Receipt { get; internal set; }
     }
@@ -69,14 +75,20 @@ namespace CheckReceiptSDK.Results
         /// Фискальный признак документа, также известный как ФП, ФПД
         /// </summary>
         [DataMember]
-        public int FiscalSign { get; internal set; }
+        public ulong FiscalSign { get; internal set; }
         /// <summary>
         /// Номер фискального документа
         /// </summary>
         [DataMember]
         public int FiscalDocumentNumber { get; internal set; }
+        /// <summary>
+        /// Код чека
+        /// </summary>
         [DataMember]
         public int ReceiptCode { get; internal set; }
+        /// <summary>
+        /// Номер запроса
+        /// </summary>
         [DataMember]
         public int RequestNumber { get; internal set; }
         /// <summary>
@@ -84,10 +96,19 @@ namespace CheckReceiptSDK.Results
         /// </summary>
         [DataMember(Name = "fiscalDriveNumber")]
         public string FiscalNumber { get; internal set; }
+        /// <summary>
+        /// Что-то вроде зашифрованной информации о чеке
+        /// </summary>
         [DataMember]
         public string RawData { get; internal set; }
+        /// <summary>
+        /// Номер смены
+        /// </summary>
         [DataMember]
         public int ShiftNumber { get; internal set; }
+        /// <summary>
+        /// Регистрационный номер ККТ
+        /// </summary>
         [DataMember]
         public string KktRegId { get; internal set; }
         #endregion
