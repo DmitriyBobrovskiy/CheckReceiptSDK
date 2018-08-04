@@ -8,6 +8,9 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <NeutralLanguage>ru-RU</NeutralLanguage>
     <Version>1.0.1</Version>
+    <PackageTags>CheckReceipt, FNS, FederalTaxService</PackageTags>
+    <PackageProjectUrl>https://github.com/Diamed/CheckReceiptSDK</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Diamed/CheckReceiptSDK/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
