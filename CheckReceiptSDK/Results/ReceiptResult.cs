@@ -99,7 +99,7 @@ namespace CheckReceiptSDK.Results
         /// <summary>
         /// Что-то вроде зашифрованной информации о чеке
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = false)]
         public string RawData { get; internal set; }
         /// <summary>
         /// Номер смены
@@ -122,12 +122,12 @@ namespace CheckReceiptSDK.Results
         /// <summary>
         /// Адрес точки продажи
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = false)]
         public string RetailPlaceAddress { get; internal set; }
         /// <summary>
         /// Наименование продавца
         /// </summary>
-        [DataMember(Name = "user")]
+        [DataMember(Name = "user", IsRequired = false)]
         public string StoreName { get; internal set; }
         /// <summary>
         /// Данные кассира, который пробил чек
@@ -137,7 +137,7 @@ namespace CheckReceiptSDK.Results
         /// <summary>
         /// Адрес электронной почты организации, отправившей информацию по чеку в ФНС
         /// </summary>
-        [DataMember(Name = "senderAddress")]
+        [DataMember(Name = "senderAddress", IsRequired = false)]
         public string SenderEmailAddress { get; internal set; }
         #endregion
 
@@ -168,22 +168,22 @@ namespace CheckReceiptSDK.Results
         /// <summary>
         /// Не понимаю что это
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = false)]
         public List<object> StornoItems { get; internal set; }
         /// <summary>
         /// Не понимаю что это
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = false)]
         public List<object> Modifiers { get; internal set; }
         /// <summary>
         /// Не понимаю что это
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = false)]
         public List<object> Message { get; internal set; }
         /// <summary>
         /// Не понимаю что это
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = false)]
         public List<object> Properties { get; internal set; }
         #endregion
     }
@@ -217,22 +217,22 @@ namespace CheckReceiptSDK.Results
         /// <summary>
         /// Сумма НДС, оплаченная по ставке 10%, в копейках
         /// </summary>
-        [DataMember(Name = "nds10")]
+        [DataMember(Name = "nds10", IsRequired = false)]
         public int Nds10Sum { get; internal set; }
         /// <summary>
         /// Сумма НДС, оплаченная по ставке 18%, в копейках
         /// </summary>
-        [DataMember(Name = "nds18")]
+        [DataMember(Name = "nds18", IsRequired = false)]
         public int Nds18Sum { get; internal set; }
         /// <summary>
         /// Не понимаю что это
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = false)]
         public List<object> Properties { get; internal set; }
         /// <summary>
         /// Не понимаю что это
         /// </summary>
-        [DataMember]
+        [DataMember(IsRequired = false)]
         public List<object> Modifiers { get; internal set; }
     }
 }

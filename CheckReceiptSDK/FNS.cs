@@ -112,7 +112,8 @@ namespace CheckReceiptSDK
 
         /// <summary>
         /// Получить детальную информацию по чеку. Если перед этим не проверялось поступил ли он в ФНС, 
-        /// то при первом обращении данный метод вернет лишь 202 Accepted и никакой информации по чеку.
+        /// то при первом обращении данный метод вернет лишь 202 Accepted(Это не правда. Он возвращает ошибку,
+        /// и чтобы всё хорошо работало мне приходится сначала через телефон активировать) и никакой информации по чеку.
         /// При повторном будет вся необходимая информация.
         /// </summary>
         /// <param name="fiscalNumber">Фискальный номер, также известный как ФН. Номер состоит из 16 цифр.</param>
@@ -149,8 +150,11 @@ namespace CheckReceiptSDK
         /// </summary>
         private static void AddRequiredHeaders()
         {
-            _client.DefaultRequestHeaders.Add("Device-Id", string.Empty);
-            _client.DefaultRequestHeaders.Add("Device-OS", string.Empty);
+            if (!_client.DefaultRequestHeaders.Contains("Device-Id"))
+            {
+                _client.DefaultRequestHeaders.Add("Device-Id", string.Empty);
+                _client.DefaultRequestHeaders.Add("Device-OS", string.Empty);
+            }
         }
 
         /// <summary>
@@ -168,8 +172,11 @@ namespace CheckReceiptSDK
             {
                 throw new ArgumentException("Недопустимое значение параметра", nameof(password));
             }
-            var credentialBuffer = new UTF8Encoding().GetBytes($"{phone}:{password}");
-            _client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(credentialBuffer)}");
+            if (!_client.DefaultRequestHeaders.Contains("Authorization"))
+            {
+                var credentialBuffer = new UTF8Encoding().GetBytes($"{phone}:{password}");
+                _client.DefaultRequestHeaders.Add("Authorization", $"Basic {Convert.ToBase64String(credentialBuffer)}");
+            }
         }
     }
 }
