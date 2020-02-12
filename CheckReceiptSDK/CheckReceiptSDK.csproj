@@ -3,14 +3,17 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Authors>Dmitriy Bobrovskiy</Authors>
-    <Description>Библиотека для получения информации по чекам от ФНС</Description>
-    <RepositoryUrl>https://github.com/diamed/CheckReceiptSDK</RepositoryUrl>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>Библиотека для получения информации по чекам от ФНС.
+Library for getting receipts' information from Russian Federal Tax Service.</Description>
+    <RepositoryUrl>https://github.com/DmitriyBobrovskiy/CheckReceiptSDK</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <PackageTags>CheckReceipt, FNS, FederalTaxService</PackageTags>
-    <PackageProjectUrl>https://github.com/Diamed/CheckReceiptSDK</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/Diamed/CheckReceiptSDK/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/DmitriyBobrovskiy/CheckReceiptSDK</PackageProjectUrl>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -19,6 +22,13 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
