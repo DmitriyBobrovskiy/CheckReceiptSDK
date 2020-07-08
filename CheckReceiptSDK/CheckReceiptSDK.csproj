@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Dmitriy Bobrovskiy</Authors>
     <Description>Библиотека для получения информации по чекам от ФНС.
 Library for getting receipts' information from Russian Federal Tax Service.</Description>
@@ -17,7 +17,7 @@ Library for getting receipts' information from Russian Federal Tax Service.</Des
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netcoreapp2.0\CheckReceiptSDK.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard2.0\CheckReceiptSDK.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
