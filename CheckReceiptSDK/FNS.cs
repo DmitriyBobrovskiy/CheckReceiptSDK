@@ -125,7 +125,7 @@ namespace CheckReceiptSDK
         /// Фискальный признак документа, также известный как ФП, ФПД. Состоит максимум из 10 цифр.
         /// </param>
         /// <param name="date">Date specified in receipt. Seconds are not required.</param>
-        /// <param name="sum">Amount specified in receipt. Includes kopecks.</param>
+        /// <param name="sum">Amount specified in receipt. In rubles. Includes kopecks.</param>
         /// <returns></returns>
         public async Task<CheckResult> CheckAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, DateTime date, decimal sum)
         {
@@ -167,19 +167,21 @@ namespace CheckReceiptSDK
             AddRequiredHeaders();
 
             var response = await _client.GetAsync(Urls.GetReceiveUrl(fiscalNumber, fiscalDocument, fiscalSign));
+            var content = await response.Content.ReadAsStringAsync();
             var result = new ReceiptResult
             {
                 IsSuccess = response.IsSuccessStatusCode,
                 StatusCode = response.StatusCode,
+                Content = content
             };
 
             try
             {
-                result.Document = JsonConvert.DeserializeObject<RootObject>(await response.Content.ReadAsStringAsync()).Document;
+                result.Document = JsonConvert.DeserializeObject<RootObject>(content).Document;
             }
             catch
             {
-                result.Message = await response.Content.ReadAsStringAsync();
+                result.Message = content;
             }
             return result;
         }

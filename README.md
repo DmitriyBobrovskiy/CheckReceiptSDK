@@ -26,3 +26,5 @@ var result = await FNS.Instance.ReceiveAsync("8710000101337659", "94248", "81542
 There are two types of tests: unit tests and integration tests. Unit tests can be run as is. 
 For running integration tests, `Ignore` attribute should be removed in `IntegrationTests` 
 class and correct values should be provided for tests.
+
+### NB: not enough information to specify all the filds in receipt
