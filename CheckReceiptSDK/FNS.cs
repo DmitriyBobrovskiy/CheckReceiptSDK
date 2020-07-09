@@ -4,17 +4,39 @@ using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("CheckReceiptSDK.Tests")]
 namespace CheckReceiptSDK
 {
     /// <summary>
     /// Класс для взаимодействия с ФНС
     /// </summary>
-    public static class FNS
+    public sealed class FNS
     {
-        private static HttpClient _client = new HttpClient();
+        private readonly HttpClient _client;
+
+        private static FNS _instance;
+        /// <summary>
+        /// Instance of class for communication with federal tax service
+        /// </summary>
+        public static FNS Instance => _instance ?? (_instance = new FNS());
+
+        private FNS()
+        {
+            _client = new HttpClient();
+        }
+
+        /// <summary>
+        /// Constructor for unit testing
+        /// </summary>
+        /// <param name="client"></param>
+        internal FNS(HttpClient client)
+        {
+            _client = client;
+        }
 
         /// <summary>
         /// Регистрация нового пользователя. Необходима для получения детальной информации по чекам.
@@ -23,7 +45,7 @@ namespace CheckReceiptSDK
         /// <param name="name">Имя пользователя</param>
         /// <param name="phone">Номер телефона пользователя в формате +79991234567</param>
         /// <returns></returns>
-        public static async Task<Result> RegistrationAsync(string email, string name, string phone)
+        public async Task<Result> RegisterAsync(string email, string name, string phone)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -52,7 +74,7 @@ namespace CheckReceiptSDK
         /// <param name="phone">Номер телефона пользователя в формате +79991234567</param>
         /// <param name="password">Пароль пользователя, который он получал из СМС при регистрации или восстановлении пароля</param>
         /// <returns>Возвращает адрес электронной почты и имя указанные при регистрации</returns>
-        public static async Task<Result> LoginAsync(string phone, string password)
+        public async Task<Result> LoginAsync(string phone, string password)
         {
             AddAuthorizationTokenToHeaders(phone, password);
 
@@ -66,7 +88,7 @@ namespace CheckReceiptSDK
         /// </summary>
         /// <param name="phone">Номер телефона в формате +79991234567</param>
         /// <returns></returns>
-        public static async Task<Result> RestorePasswordAsync(string phone)
+        public async Task<Result> RestorePasswordAsync(string phone)
         {
             if (string.IsNullOrWhiteSpace(phone))
             {
@@ -80,7 +102,7 @@ namespace CheckReceiptSDK
             return await GetResultAsync(response);
         }
 
-        private static async Task<Result> GetResultAsync(HttpResponseMessage response) => new Result
+        private async Task<Result> GetResultAsync(HttpResponseMessage response) => new Result
         {
             IsSuccess = response.IsSuccessStatusCode,
             Message = await response.Content.ReadAsStringAsync(),
@@ -96,7 +118,7 @@ namespace CheckReceiptSDK
         /// <param name="date">Дата, указанная в чеке. Секунды не обязательные.</param>
         /// <param name="sum">Сумма, указанная в чеке. Включая копейки.</param>
         /// <returns></returns>
-        public static async Task<CheckResult> CheckAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, DateTime date, decimal sum)
+        public async Task<CheckResult> CheckAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, DateTime date, decimal sum)
         {
             var response = await _client.GetAsync(Urls.GetCheckUrl(fiscalNumber, fiscalDocument, fiscalSign, date, sum));
             var result = new CheckResult
@@ -122,7 +144,7 @@ namespace CheckReceiptSDK
         /// <param name="phone">Номер телефона в формате +79991234567, использованный при регистрации</param>
         /// <param name="password">Пароль пользователя, полученный в СМС</param>
         /// <returns>Возвращает информацию по чеку</returns>
-        public static async Task<ReceiptResult> ReceiveAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, string phone, string password)
+        public async Task<ReceiptResult> ReceiveAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, string phone, string password)
         {
             AddAuthorizationTokenToHeaders(phone, password);
             AddRequiredHeaders();
@@ -148,7 +170,7 @@ namespace CheckReceiptSDK
         /// <summary>
         /// Некоторые методы требуют специальных заголовков. Данный метод добавляет их.
         /// </summary>
-        private static void AddRequiredHeaders()
+        private void AddRequiredHeaders()
         {
             if (!_client.DefaultRequestHeaders.Contains("Device-Id"))
             {
@@ -162,7 +184,7 @@ namespace CheckReceiptSDK
         /// </summary>
         /// <param name="phone">Номер телефона для авторизации</param>
         /// <param name="password">Пароль пользователя для авторизации</param>
-        private static void AddAuthorizationTokenToHeaders(string phone, string password)
+        private void AddAuthorizationTokenToHeaders(string phone, string password)
         {
             if (string.IsNullOrWhiteSpace(phone))
             {

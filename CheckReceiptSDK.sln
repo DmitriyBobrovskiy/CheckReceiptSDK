@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.29505.145
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckReceiptSDK", "CheckReceiptSDK\CheckReceiptSDK.csproj", "{68B1B53F-0829-4A23-9423-903036D5DC77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckReceiptSDK.Tests", "CheckReceiptSDK.Tests\CheckReceiptSDK.Tests.csproj", "{8718B699-22CA-4A90-9BB1-E52AB3F4B696}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckReceiptSDK.Tests", "CheckReceiptSDK.Tests\CheckReceiptSDK.Tests.csproj", "{8718B699-22CA-4A90-9BB1-E52AB3F4B696}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3E02A739-6455-4FBD-8044-9884C5810679}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
