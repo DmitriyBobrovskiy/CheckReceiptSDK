@@ -3,20 +3,20 @@
 namespace CheckReceiptSDK.Results
 {
     /// <summary>
-    /// Класс, используемый для представления ответа, полученного от ФНС
+    /// Represents response received from Russian Federal Tax Service
     /// </summary>
     public class Result
     {
         /// <summary>
-        /// Стандартный HTTP код
+        /// Standard HTTP code
         /// </summary>
         public HttpStatusCode StatusCode { get; internal set; }
         /// <summary>
-        /// Ответ, полученный от ФНС. Может отсутствовать.
+        /// Content received from Federal Tax Service. May be omitted.
         /// </summary>
         public string Message { get; internal set; }
         /// <summary>
-        /// Успешно ли выполнен запрос?
+        /// Request is success
         /// </summary>
         public bool IsSuccess { get; internal set; }
 

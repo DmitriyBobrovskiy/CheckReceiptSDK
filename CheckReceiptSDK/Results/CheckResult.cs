@@ -1,12 +1,12 @@
 ﻿namespace CheckReceiptSDK.Results
 {
     /// <summary>
-    /// Класс, представляющий ответ, полученный в результате проверки существования чека
+    /// Represents response received on receipt's existence verification
     /// </summary>
     public sealed class CheckResult : Result
     {
         /// <summary>
-        /// Существует ли чек в базе ФНС?
+        /// Receipt exists in Russian Federal Tax Service
         /// </summary>
         public bool ReceiptExists { get; internal set; }
 
