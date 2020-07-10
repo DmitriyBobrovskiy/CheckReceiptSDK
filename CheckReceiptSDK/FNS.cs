@@ -4,38 +4,60 @@ using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("CheckReceiptSDK.Tests")]
 namespace CheckReceiptSDK
 {
     /// <summary>
-    /// Класс для взаимодействия с ФНС
+    /// Class for communication with Russian federal tax service
     /// </summary>
-    public static class FNS
+    public sealed class FNS
     {
-        private static HttpClient _client = new HttpClient();
+        private readonly HttpClient _client;
+
+        private static FNS _instance;
+        /// <summary>
+        /// Instance of class for communication with federal tax service
+        /// </summary>
+        public static FNS Instance => _instance ?? (_instance = new FNS());
+
+        private FNS()
+        {
+            _client = new HttpClient();
+        }
 
         /// <summary>
-        /// Регистрация нового пользователя. Необходима для получения детальной информации по чекам.
+        /// Constructor for unit testing
         /// </summary>
-        /// <param name="email">Электронный адрес пользователя</param>
-        /// <param name="name">Имя пользователя</param>
-        /// <param name="phone">Номер телефона пользователя в формате +79991234567</param>
+        /// <param name="client"></param>
+        internal FNS(HttpClient client)
+        {
+            _client = client;
+        }
+
+        /// <summary>
+        /// New user registration. User is needed for getting receipt's detailed information.
+        /// </summary>
+        /// <param name="email">User email address</param>
+        /// <param name="name">User name</param>
+        /// <param name="phone">User phone number in format +79991234567</param>
         /// <returns></returns>
-        public static async Task<Result> RegistrationAsync(string email, string name, string phone)
+        public async Task<Result> RegisterAsync(string email, string name, string phone)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(email));
+                throw new ArgumentException("Unacceptable parameter value", nameof(email));
             }
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(name));
+                throw new ArgumentException("Unacceptable parameter value", nameof(name));
             }
             if (string.IsNullOrWhiteSpace(phone))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(phone));
+                throw new ArgumentException("Unacceptable parameter value", nameof(phone));
             }
 
             var requestContent = new StringContent(JsonConvert.SerializeObject(new { phone, email, name }));
@@ -47,12 +69,12 @@ namespace CheckReceiptSDK
         }
 
         /// <summary>
-        /// Аутентификация пользователя. Необходимости в ней нет, но раз ФНС предоставляет, как не воспользоваться.
+        /// Sign in. Actually it is not needed.
         /// </summary>
-        /// <param name="phone">Номер телефона пользователя в формате +79991234567</param>
-        /// <param name="password">Пароль пользователя, который он получал из СМС при регистрации или восстановлении пароля</param>
-        /// <returns>Возвращает адрес электронной почты и имя указанные при регистрации</returns>
-        public static async Task<Result> LoginAsync(string phone, string password)
+        /// <param name="phone">User phone number in format +79991234567</param>
+        /// <param name="password">User password that user got via SMS during registration or password restore.</param>
+        /// <returns>Email and user name specified on registration</returns>
+        public async Task<Result> LoginAsync(string phone, string password)
         {
             AddAuthorizationTokenToHeaders(phone, password);
 
@@ -62,15 +84,15 @@ namespace CheckReceiptSDK
         }
 
         /// <summary>
-        /// Восстановление пароля. Восстановленный пароль придет в СМС.
+        /// Password restore. Restored password will be sent to user in SMS.
         /// </summary>
-        /// <param name="phone">Номер телефона в формате +79991234567</param>
+        /// <param name="phone">User phone number in format +79991234567</param>
         /// <returns></returns>
-        public static async Task<Result> RestorePasswordAsync(string phone)
+        public async Task<Result> RestorePasswordAsync(string phone)
         {
             if (string.IsNullOrWhiteSpace(phone))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(phone));
+                throw new ArgumentException("Unacceptable parameter value", nameof(phone));
             }
             var requestContent = new StringContent(JsonConvert.SerializeObject(new { phone }));
             requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -80,7 +102,7 @@ namespace CheckReceiptSDK
             return await GetResultAsync(response);
         }
 
-        private static async Task<Result> GetResultAsync(HttpResponseMessage response) => new Result
+        private async Task<Result> GetResultAsync(HttpResponseMessage response) => new Result
         {
             IsSuccess = response.IsSuccessStatusCode,
             Message = await response.Content.ReadAsStringAsync(),
@@ -88,15 +110,24 @@ namespace CheckReceiptSDK
         };
 
         /// <summary>
-        /// Проверить поступил ли чек в ФНС
+        /// Check if federal tax service got the receipt.
         /// </summary>
-        /// <param name="fiscalNumber">Фискальный номер, также известный как ФН. Номер состоит из 16 цифр.</param>
-        /// <param name="fiscalDocument">Номер фискального документа, также известный как ФД. Состоит максимум из 10 цифр.</param>
-        /// <param name="fiscalSign">Фискальный признак документа, также известный как ФП, ФПД. Состоит максимум из 10 цифр.</param>
-        /// <param name="date">Дата, указанная в чеке. Секунды не обязательные.</param>
-        /// <param name="sum">Сумма, указанная в чеке. Включая копейки.</param>
+        /// <param name="fiscalNumber">
+        /// Fiscal number, so called as FN. Number consists of 16 digits.
+        /// Фискальный номер, также известный как ФН. Номер состоит из 16 цифр.
+        /// </param>
+        /// <param name="fiscalDocument">
+        /// Fiscal document number, so called FD. Number consists of 10 digits max.
+        /// Номер фискального документа, также известный как ФД. Состоит максимум из 10 цифр.
+        /// </param>
+        /// <param name="fiscalSign">
+        /// Fiscal sign (attribute), so called ФП, ФПД. Consists of 10 digits max.
+        /// Фискальный признак документа, также известный как ФП, ФПД. Состоит максимум из 10 цифр.
+        /// </param>
+        /// <param name="date">Date specified in receipt. Seconds are not required.</param>
+        /// <param name="sum">Amount specified in receipt. In rubles. Includes kopecks.</param>
         /// <returns></returns>
-        public static async Task<CheckResult> CheckAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, DateTime date, decimal sum)
+        public async Task<CheckResult> CheckAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, DateTime date, decimal sum)
         {
             var response = await _client.GetAsync(Urls.GetCheckUrl(fiscalNumber, fiscalDocument, fiscalSign, date, sum));
             var result = new CheckResult
@@ -111,44 +142,64 @@ namespace CheckReceiptSDK
         }
 
         /// <summary>
-        /// Получить детальную информацию по чеку. Если перед этим не проверялось поступил ли он в ФНС, 
-        /// то при первом обращении данный метод вернет лишь 202 Accepted(Это не правда. Он возвращает ошибку,
-        /// и чтобы всё хорошо работало мне приходится сначала через телефон активировать) и никакой информации по чеку.
-        /// При повторном будет вся необходимая информация.
+        /// Get detailed receipt's information.
+        /// Before calling this method <see cref="CheckAsync(string, string, string, DateTime, decimal)"/>
+        /// should be called.
         /// </summary>
-        /// <param name="fiscalNumber">Фискальный номер, также известный как ФН. Номер состоит из 16 цифр.</param>
-        /// <param name="fiscalDocument">Номер фискального документа, также известный как ФД. Состоит максимум из 10 цифр.</param>
-        /// <param name="fiscalSign">Фискальный признак документа, также известный как ФП, ФПД. Состоит максимум из 10 цифр.</param>
-        /// <param name="phone">Номер телефона в формате +79991234567, использованный при регистрации</param>
-        /// <param name="password">Пароль пользователя, полученный в СМС</param>
-        /// <returns>Возвращает информацию по чеку</returns>
-        public static async Task<ReceiptResult> ReceiveAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, string phone, string password)
+        /// <param name="fiscalNumber">
+        /// Fiscal number, so called as FN. Number consists of 16 digits.
+        /// Фискальный номер, также известный как ФН. Номер состоит из 16 цифр.
+        /// </param>
+        /// <param name="fiscalDocument">
+        /// Fiscal document number, so called FD. Number consists of 10 digits max.
+        /// Номер фискального документа, также известный как ФД. Состоит максимум из 10 цифр.
+        /// </param>
+        /// <param name="fiscalSign">
+        /// Fiscal sign (attribute), so called ФП, ФПД. Consists of 10 digits max.
+        /// Фискальный признак документа, также известный как ФП, ФПД. Состоит максимум из 10 цифр.
+        /// </param>
+        /// <param name="phone">User phone number in format +79991234567</param>
+        /// <param name="password">User password that user got via SMS during registration or password restore.</param>
+        /// <param name="requestAgainIfAccepted">
+        /// If response is 202 Accepted you can provide <see cref="true"/> 
+        /// and method will make the second attempt to get the receipt.
+        /// </param>
+        /// <returns>Receipt's information</returns>
+        public async Task<ReceiptResult> ReceiveAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, string phone, string password, bool requestAgainIfAccepted = false)
         {
             AddAuthorizationTokenToHeaders(phone, password);
             AddRequiredHeaders();
 
             var response = await _client.GetAsync(Urls.GetReceiveUrl(fiscalNumber, fiscalDocument, fiscalSign));
+
+            if (requestAgainIfAccepted && response.StatusCode == System.Net.HttpStatusCode.Accepted)
+            {
+                return await ReceiveAsync(fiscalNumber, fiscalDocument, fiscalSign, phone, password);
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
             var result = new ReceiptResult
             {
                 IsSuccess = response.IsSuccessStatusCode,
                 StatusCode = response.StatusCode,
+                Content = content
             };
 
             try
             {
-                result.Document = JsonConvert.DeserializeObject<RootObject>(await response.Content.ReadAsStringAsync()).Document;
+                result.Document = JsonConvert.DeserializeObject<RootObject>(content).Document;
             }
             catch
             {
-                result.Message = await response.Content.ReadAsStringAsync();
+                result.Message = content;
             }
             return result;
         }
 
         /// <summary>
-        /// Некоторые методы требуют специальных заголовков. Данный метод добавляет их.
+        /// Some methods require specific headers. This method adds them.
         /// </summary>
-        private static void AddRequiredHeaders()
+        private void AddRequiredHeaders()
         {
             if (!_client.DefaultRequestHeaders.Contains("Device-Id"))
             {
@@ -158,19 +209,19 @@ namespace CheckReceiptSDK
         }
 
         /// <summary>
-        /// Некоторые методы требуют авторизации. Данный метод добавляет эту авторизацию.
+        /// Some methods require authorization. This method adds that authorization.
         /// </summary>
-        /// <param name="phone">Номер телефона для авторизации</param>
-        /// <param name="password">Пароль пользователя для авторизации</param>
-        private static void AddAuthorizationTokenToHeaders(string phone, string password)
+        /// <param name="phone">User phone number for authorization</param>
+        /// <param name="password">User password for authorization</param>
+        private void AddAuthorizationTokenToHeaders(string phone, string password)
         {
             if (string.IsNullOrWhiteSpace(phone))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(phone));
+                throw new ArgumentException("Unacceptable parameter value", nameof(phone));
             }
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(password));
+                throw new ArgumentException("Unacceptable parameter value", nameof(password));
             }
             if (!_client.DefaultRequestHeaders.Contains("Authorization"))
             {
