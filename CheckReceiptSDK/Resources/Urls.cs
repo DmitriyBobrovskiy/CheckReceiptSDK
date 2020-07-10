@@ -14,19 +14,19 @@ namespace CheckReceiptSDK.Resources
         {
             if (string.IsNullOrWhiteSpace(fiscalSign))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(fiscalSign));
+                throw new ArgumentException("Unacceptable parameter value", nameof(fiscalSign));
             }
             if (string.IsNullOrWhiteSpace(fiscalNumber))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(fiscalNumber));
+                throw new ArgumentException("Unacceptable parameter value", nameof(fiscalNumber));
             }
             if (string.IsNullOrWhiteSpace(fiscalDocument))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(fiscalDocument));
+                throw new ArgumentException("Unacceptable parameter value", nameof(fiscalDocument));
             }
             if (date.Equals(DateTime.MinValue))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(date));
+                throw new ArgumentException("Unacceptable parameter value", nameof(date));
             }
 
             return $"https://proverkacheka.nalog.ru:9999/v1/ofds/*/inns/*/fss/{fiscalNumber}/operations/1/tickets/{fiscalDocument}" +
@@ -40,15 +40,15 @@ namespace CheckReceiptSDK.Resources
         {
             if (string.IsNullOrWhiteSpace(fiscalSign))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(fiscalSign));
+                throw new ArgumentException("Unacceptable parameter value", nameof(fiscalSign));
             }
             if (string.IsNullOrWhiteSpace(fiscalNumber))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(fiscalNumber));
+                throw new ArgumentException("Unacceptable parameter value", nameof(fiscalNumber));
             }
             if (string.IsNullOrWhiteSpace(fiscalDocument))
             {
-                throw new ArgumentException("Недопустимое значение параметра", nameof(fiscalDocument));
+                throw new ArgumentException("Unacceptable parameter value", nameof(fiscalDocument));
             }
             return $"https://proverkacheka.nalog.ru:9999/v1/inns/*/kkts/*/fss/{fiscalNumber}/tickets/{fiscalDocument}?fiscalSign={fiscalSign}&sendToEmail=no";
         }
