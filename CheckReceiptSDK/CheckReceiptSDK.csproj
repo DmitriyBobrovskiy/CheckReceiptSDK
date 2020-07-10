@@ -3,17 +3,22 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Dmitriy Bobrovskiy</Authors>
-    <Description>Библиотека для получения информации по чекам от ФНС.
-Library for getting receipts' information from Russian Federal Tax Service.</Description>
+    <Description>Library for getting receipts' information from Russian Federal Tax Service.
+Библиотека для получения информации по чекам от Федеральной Налоговой Службы (ФНС).</Description>
     <RepositoryUrl>https://github.com/DmitriyBobrovskiy/CheckReceiptSDK</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <Version>1.1.0</Version>
+    <Version>2.0.0</Version>
     <PackageTags>CheckReceipt, FNS, FederalTaxService</PackageTags>
     <PackageProjectUrl>https://github.com/DmitriyBobrovskiy/CheckReceiptSDK</PackageProjectUrl>
     <PackageLicenseExpression></PackageLicenseExpression>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReleaseNotes>Updated architecture of FNS class.
+Changed structure of result got from federal tax service.
+Translated comments.
+Improved unit tests.
+</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
