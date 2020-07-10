@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace CheckReceiptSDK.Results
@@ -35,30 +36,42 @@ namespace CheckReceiptSDK.Results
         [DataMember(IsRequired = false)]
         public int Nds { get; internal set; }
         /// <summary>
-        /// VAT amount paid by 10% rate. In kopecks.
-        /// Not sure if still is used.
+        /// No description
+        /// </summary>
+        [DataMember(IsRequired = false)]
+        public int NdsNo { get; internal set; }
+        /// <summary>
+        /// No description
+        /// </summary>
+        [DataMember(IsRequired = false)]
+        public int PaymentType { get; internal set; }
+
+        #region Obsolete
+        /// <summary>
+        /// VAT amount paid by 10% rate. In kopecks. Looks like it's obsolete. 
+        /// If it's not, please contact developer <see href="https://github.com/DmitriyBobrovskiy/CheckReceiptSDK"/>
         /// </summary>
         [DataMember(Name = "nds10", IsRequired = false)]
+        [Obsolete]
         public int Nds10Sum { get; internal set; }
         /// <summary>
-        /// VAT amount paid by 18% rate. In kopecks.
-        /// Not sure if still is used.
+        /// VAT amount paid by 18% rate. In kopecks. Looks like it's obsolete. 
+        /// If it's not, please contact developer <see href="https://github.com/DmitriyBobrovskiy/CheckReceiptSDK"/>
         /// </summary>
         [DataMember(Name = "nds18", IsRequired = false)]
         public int Nds18Sum { get; internal set; }
         /// <summary>
-        /// No description
+        /// No description. Looks like it's obsolete. 
+        /// If it's not, please contact developer <see href="https://github.com/DmitriyBobrovskiy/CheckReceiptSDK"/>
         /// </summary>
         [DataMember(IsRequired = false)]
         public List<object> Properties { get; internal set; }
         /// <summary>
-        /// No description
+        /// No description. Looks like it's obsolete. 
+        /// If it's not, please contact developer <see href="https://github.com/DmitriyBobrovskiy/CheckReceiptSDK"/>
         /// </summary>
         [DataMember(IsRequired = false)]
         public List<object> Modifiers { get; internal set; }
-        /// <summary>
-        /// No description
-        /// </summary>
-        public int PaymentType { get; internal set; }
+        #endregion
     }
 }
