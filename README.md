@@ -1,12 +1,12 @@
 # CheckReceiptSDK
 Library for getting receipts' information from Russian Federal Tax Service.  
-Библиотека для получения информации по чекам от ФНС.
+Библиотека для получения информации по чекам от Федеральной Налоговой Службы (ФНС).
 
 ### Usage example:
 
 Registration:
 ```csharp
-var result = await FNS.Instance.RegistrationAsync("some@mail.com", "Name", "+79991234567");
+var result = await FNS.Instance.RegisterAsync("some@mail.com", "Name", "+79991234567");
 ```
 Password restore:
 ```csharp
@@ -27,4 +27,4 @@ There are two types of tests: unit tests and integration tests. Unit tests can b
 For running integration tests, `Ignore` attribute should be removed in `IntegrationTests` 
 class and correct values should be provided for tests.
 
-### NB: not enough information to specify all the filds in receipt
+### NB: not enough information to specify all the fields in receipt
