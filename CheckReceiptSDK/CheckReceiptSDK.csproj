@@ -8,7 +8,7 @@ Library for getting receipts' information from Russian Federal Tax Service.</Des
     <RepositoryUrl>https://github.com/DmitriyBobrovskiy/CheckReceiptSDK</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <NeutralLanguage>ru-RU</NeutralLanguage>
-    <Version>1.0.2</Version>
+    <Version>1.1.0</Version>
     <PackageTags>CheckReceipt, FNS, FederalTaxService</PackageTags>
     <PackageProjectUrl>https://github.com/DmitriyBobrovskiy/CheckReceiptSDK</PackageProjectUrl>
     <PackageLicenseExpression></PackageLicenseExpression>
