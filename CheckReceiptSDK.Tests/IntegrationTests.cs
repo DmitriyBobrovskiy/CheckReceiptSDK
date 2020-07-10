@@ -50,9 +50,9 @@ namespace CheckReceiptSDK.Tests
         // TODO: fill your data here
         [TestCase("9280440300631425", "45549", "3488636555", "2020-02-11T17:57:00", 179)]
         public async Task Check(string fiscalNumber, string fiscalDocument, 
-            string fiscalSign, DateTime date, decimal sum)
+            string fiscalSign, DateTime date, decimal sumInRubles)
         {
-            var result = await FNS.Instance.CheckAsync(fiscalNumber, fiscalDocument, fiscalSign, date, sum);
+            var result = await FNS.Instance.CheckAsync(fiscalNumber, fiscalDocument, fiscalSign, date, sumInRubles);
 
             WriteOutput(result);
             Assert.IsTrue(result.IsSuccess);
@@ -64,7 +64,7 @@ namespace CheckReceiptSDK.Tests
         public async Task Receive(string fiscalNumber, string fiscalDocument, string fiscalSign, 
             string phone, string password)
         {
-            var result = await FNS.Instance.ReceiveAsync(fiscalNumber, fiscalDocument, fiscalSign, phone, password);
+            var result = await FNS.Instance.ReceiveAsync(fiscalNumber, fiscalDocument, fiscalSign, phone, password, true);
 
             WriteOutput(result);
             Assert.IsTrue(result.IsSuccess);
