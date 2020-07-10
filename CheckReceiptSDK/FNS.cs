@@ -160,13 +160,23 @@ namespace CheckReceiptSDK
         /// </param>
         /// <param name="phone">User phone number in format +79991234567</param>
         /// <param name="password">User password that user got via SMS during registration or password restore.</param>
+        /// <param name="requestAgainIfAccepted">
+        /// If response is 202 Accepted you can provide <see cref="true"/> 
+        /// and method will make the second attempt to get the receipt.
+        /// </param>
         /// <returns>Receipt's information</returns>
-        public async Task<ReceiptResult> ReceiveAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, string phone, string password)
+        public async Task<ReceiptResult> ReceiveAsync(string fiscalNumber, string fiscalDocument, string fiscalSign, string phone, string password, bool requestAgainIfAccepted = false)
         {
             AddAuthorizationTokenToHeaders(phone, password);
             AddRequiredHeaders();
 
             var response = await _client.GetAsync(Urls.GetReceiveUrl(fiscalNumber, fiscalDocument, fiscalSign));
+
+            if (requestAgainIfAccepted && response.StatusCode == System.Net.HttpStatusCode.Accepted)
+            {
+                return await ReceiveAsync(fiscalNumber, fiscalDocument, fiscalSign, phone, password);
+            }
+
             var content = await response.Content.ReadAsStringAsync();
             var result = new ReceiptResult
             {
