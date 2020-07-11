@@ -1,0 +1,17 @@
+name: Nuget publish
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Publish NuGet
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+          PROJECT_FILE_PATH: CheckReceiptSDK/CheckReceiptSDK.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
