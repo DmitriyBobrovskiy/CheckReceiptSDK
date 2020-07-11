@@ -1,9 +1,7 @@
-name: .NET Core
+name: Nuget publish
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ master ]
 
 jobs:
@@ -21,5 +19,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+    - name: Publish NuGet
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+          PROJECT_FILE_PATH: CheckReceiptSDK/CheckReceiptSDK.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
