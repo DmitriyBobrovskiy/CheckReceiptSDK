@@ -1,3 +1,5 @@
+[![NuGet](https://img.shields.io/nuget/dt/CheckReceiptSDK.svg?label=NuGet)](https://www.nuget.org/packages/CheckReceiptSDK) 
+![Nuget](https://img.shields.io/nuget/v/CheckReceiptSDK)
 # CheckReceiptSDK
 Library for getting receipts' information from Russian Federal Tax Service.  
 Библиотека для получения информации по чекам от Федеральной Налоговой Службы (ФНС).
