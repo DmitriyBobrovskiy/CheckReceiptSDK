@@ -4,8 +4,6 @@
 Library for getting receipts' information from Russian Federal Tax Service.  
 Библиотека для получения информации по чекам от Федеральной Налоговой Службы (ФНС).
 
-## Important: after upgrade it stopped working [see](https://github.com/DmitriyBobrovskiy/CheckReceiptSDK/issues/12). I didn't figure out yet if it is solvable.
-
 ### Usage example:
 
 Registration:
